@@ -48,10 +48,7 @@ void loop() {
 
   }
 
-
-   //se o botão não estiver pressionado e o estado anterior for HIGH (e.g. após primeira execução), setar variável de estado anterior para LOW
-  if (estadoBotao == LOW && estadoAnteriorBotao == HIGH) {
-    estadoAnteriorBotao = estadoBotao;
+  if (digitalRead(BOTAO_PEDESTRE) == HIGH) {
     botaoLatencia = true;
   }
 
@@ -61,6 +58,12 @@ void loop() {
       semaforo();
     }
     emLatencia = false;
+    botaoLatencia = false;
+  }
+
+  //se o botão não estiver pressionado e o estado anterior for HIGH (e.g. após primeira execução), setar variável de estado anterior para LOW
+  if (estadoBotao == LOW && estadoAnteriorBotao == HIGH) {
+    estadoAnteriorBotao = estadoBotao;
   }
 
 
