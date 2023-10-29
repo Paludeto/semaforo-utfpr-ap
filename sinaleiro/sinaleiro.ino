@@ -48,8 +48,10 @@ void loop() {
 
   }
 
-  if (digitalRead(BOTAO_PEDESTRE) == HIGH) {
-    botaoLatencia = true;
+  if (estadoBotao == HIGH && estadoAnteriorBotao == LOW && emLatencia == true) {
+    if (digitalRead(BOTAO_PEDESTRE) == HIGH) {
+      botaoLatencia = true;
+    }
   }
 
   //se está em modo de latência e o intervalo de tempo foi maior ou igual a 5 segundos, setar emLatencia para falso e checar o estado anterior do botao para executar a função após o final do modo de latência
