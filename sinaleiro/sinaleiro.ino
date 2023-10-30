@@ -69,21 +69,21 @@ void semaforo() {
   unsigned long tempoAnterior = millis();
   
   //desliga o verde da via e acende o amarelo por 3 segundos
-  while (millis() - tempoAnterior =< 3000) {
+  while (millis() - tempoAnterior < 3000) {
     digitalWrite(VERDE_VIA, LOW);
     digitalWrite(AMARELO_VIA, HIGH);
   }
 
   //desliga o amarelo da via e acende o vermelho por 2 segundos
   tempoAnterior = millis();
-  while (millis() - tempoAnterior =< 2000) {
+  while (millis() - tempoAnterior < 2000) {
     digitalWrite(AMARELO_VIA, LOW);
     digitalWrite(VERMELHO_VIA, HIGH);
   }
   
   //desliga o vermelho da via e acende o verde por 5 segundos
   tempoAnterior = millis();
-  while (millis() - tempoAnterior =< 5000) {
+  while (millis() - tempoAnterior < 5000) {
     digitalWrite(VERMELHO_PEDESTRE, LOW);
     digitalWrite(VERDE_PEDESTRE, HIGH);
   }
@@ -93,12 +93,12 @@ void semaforo() {
   for (int i = 0; i < 3; i++) {
 
     tempoAnterior = millis();
-    while (millis() - tempoAnterior =< 1000) {
+    while (millis() - tempoAnterior < 1000) {
       digitalWrite(VERDE_PEDESTRE, LOW);
     }
     
     tempoAnterior = millis();
-    while (millis() - tempoAnterior =< 1000) {
+    while (millis() - tempoAnterior < 1000) {
       digitalWrite(VERDE_PEDESTRE, HIGH);
     }
     
