@@ -13,6 +13,7 @@ byte estadoBotao = 0;
 byte estadoAnteriorBotao = 0;
 bool emLatencia = false;
 bool botaoLatencia = false;
+unsigned long tempoInicioLatencia;
 
 void setup() {
   pinMode(LED_BUILTIN, LOW);
@@ -22,11 +23,10 @@ void setup() {
   pinMode(VERMELHO_PEDESTRE, OUTPUT);
   pinMode(VERDE_PEDESTRE, OUTPUT);
   pinMode(BOTAO_PEDESTRE, INPUT);
+  Serial.begin(9600);
 }
 
 void loop() {
-
-  unsigned long tempoInicioLatencia;
 
   //semáforo da via sempre verde, semáforo de pedestre sempre vermelho enquanto o botão não estiver apertado
   digitalWrite(VERDE_VIA, HIGH);
@@ -38,36 +38,29 @@ void loop() {
   //se o estado atual do botão for HIGH e o estado anterior LOW, estadoAnterior armazena o estado atual e a função semáforo é chamada
   if (estadoBotao == HIGH && estadoAnteriorBotao == LOW && emLatencia == false) {
     estadoAnteriorBotao = estadoBotao;
-
-    //seta a variável emLatencia para true, para indicar que o semáforo entrará em modo de latência após a execução de seu código
-    emLatencia = true;
     semaforo();
-
-    //cronometra o tempo a partir do final da execução do código para ser utilizado na condicional ao final
-    tempoInicioLatencia = millis();
-
   }
 
+  //checa se botão foi pressionado durante modo de latência
   if (estadoBotao == HIGH && estadoAnteriorBotao == LOW && emLatencia == true) {
     if (digitalRead(BOTAO_PEDESTRE) == HIGH) {
       botaoLatencia = true;
     }
   }
 
-  //se está em modo de latência e o intervalo de tempo foi maior ou igual a 5 segundos, setar emLatencia para falso e checar o estado anterior do botao para executar a função após o final do modo de latência
+  //se está em modo de latência e o intervalo de tempo foi maior ou igual a 5 segundos, checar se o botão foi pressionado para setar emLatencia para falso, botaoLatencia para falso e executar a função semaforo()
   if (emLatencia && millis() - tempoInicioLatencia >= 5000) {
     if (botaoLatencia) {
+      emLatencia = false;
+      botaoLatencia = false;
       semaforo();
     }
-    emLatencia = false;
-    botaoLatencia = false;
   }
 
   //se o botão não estiver pressionado e o estado anterior for HIGH (e.g. após primeira execução), setar variável de estado anterior para LOW
   if (estadoBotao == LOW && estadoAnteriorBotao == HIGH) {
     estadoAnteriorBotao = estadoBotao;
   }
-
 
 }
 
@@ -76,21 +69,21 @@ void semaforo() {
   unsigned long tempoAnterior = millis();
   
   //desliga o verde da via e acende o amarelo por 3 segundos
-  while (millis() - tempoAnterior < 3000) {
+  while (millis() - tempoAnterior =< 3000) {
     digitalWrite(VERDE_VIA, LOW);
     digitalWrite(AMARELO_VIA, HIGH);
   }
 
   //desliga o amarelo da via e acende o vermelho por 2 segundos
   tempoAnterior = millis();
-  while (millis() - tempoAnterior < 2000) {
+  while (millis() - tempoAnterior =< 2000) {
     digitalWrite(AMARELO_VIA, LOW);
     digitalWrite(VERMELHO_VIA, HIGH);
   }
   
   //desliga o vermelho da via e acende o verde por 5 segundos
   tempoAnterior = millis();
-  while (millis() - tempoAnterior < 5000) {
+  while (millis() - tempoAnterior =< 5000) {
     digitalWrite(VERMELHO_PEDESTRE, LOW);
     digitalWrite(VERDE_PEDESTRE, HIGH);
   }
@@ -100,12 +93,12 @@ void semaforo() {
   for (int i = 0; i < 3; i++) {
 
     tempoAnterior = millis();
-    while (millis() - tempoAnterior < 1000) {
+    while (millis() - tempoAnterior =< 1000) {
       digitalWrite(VERDE_PEDESTRE, LOW);
     }
     
     tempoAnterior = millis();
-    while (millis() - tempoAnterior < 1000) {
+    while (millis() - tempoAnterior =< 1000) {
       digitalWrite(VERDE_PEDESTRE, HIGH);
     }
     
@@ -114,5 +107,10 @@ void semaforo() {
   //apaga os leds previamente acesos para retornar ao loop neste estado
   digitalWrite(VERMELHO_VIA, LOW);
   digitalWrite(VERDE_PEDESTRE, LOW);
+  
+  //seta a variável emLatencia para true, para indicar que o semáforo entrará em modo de latência após a execução de seu código
+  //cronometra o tempo de início do modo de latência
+  tempoInicioLatencia = millis();
+  emLatencia = true;
   
 }
