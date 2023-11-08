@@ -16,6 +16,7 @@ bool botaoLatencia = false;
 unsigned long tempoInicioLatencia;
 
 void setup() {
+  
   pinMode(LED_BUILTIN, LOW);
   pinMode(VERDE_VIA, OUTPUT);
   pinMode(VERMELHO_VIA, OUTPUT);
@@ -23,7 +24,7 @@ void setup() {
   pinMode(VERMELHO_PEDESTRE, OUTPUT);
   pinMode(VERDE_PEDESTRE, OUTPUT);
   pinMode(BOTAO_PEDESTRE, INPUT);
-  Serial.begin(9600);
+  
 }
 
 void loop() {
