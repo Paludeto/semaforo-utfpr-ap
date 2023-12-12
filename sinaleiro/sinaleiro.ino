@@ -21,8 +21,6 @@ byte estadoAnteriorBotao = 0;
 bool emLatencia = false;
 bool botaoLatencia = false;
 unsigned long tempoInicioLatencia;
-unsigned long millisInicio;
-unsigned long millisAtual;
 
 void setup() {
   pinMode(VERDE_VIA, OUTPUT);
@@ -31,7 +29,6 @@ void setup() {
   pinMode(VERMELHO_PEDESTRE, OUTPUT);
   pinMode(VERDE_PEDESTRE, OUTPUT);
   pinMode(BOTAO_PEDESTRE, INPUT);
-  millisInicio = millis();
 }
 
 void loop() {
