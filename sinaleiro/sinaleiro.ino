@@ -6,8 +6,8 @@
 */
 
 //pins do semáforo da via
-#define VERMELHO_VIA 13
-#define AMARELO_VIA 12
+#define VERMELHO_VIA 12
+#define AMARELO_VIA 13
 #define VERDE_VIA 11
 
 //pins do semáforo e botão de pedestre
