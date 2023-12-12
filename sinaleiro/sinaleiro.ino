@@ -25,7 +25,6 @@ unsigned long millisInicio;
 unsigned long millisAtual;
 
 void setup() {
-  pinMode(LED_BUILTIN, LOW);
   pinMode(VERDE_VIA, OUTPUT);
   pinMode(VERMELHO_VIA, OUTPUT);
   pinMode(AMARELO_VIA, OUTPUT);
@@ -74,42 +73,50 @@ void loop() {
 }
 
 void semaforo() {
+  unsigned long tempoAnterior = millis();
 
   //desliga o verde da via e acende o amarelo por 3 segundos
-  digitalWrite(VERDE_VIA, LOW);
-  digitalWrite(AMARELO_VIA, HIGH);
-  delay(3000);
-  
+  while (millis() - tempoAnterior < 3000) {
+    digitalWrite(VERDE_VIA, LOW);
+    digitalWrite(AMARELO_VIA, HIGH);
+  }
 
   //desliga o amarelo da via e acende o vermelho por 2 segundos
-  digitalWrite(AMARELO_VIA, LOW);
-  digitalWrite(VERMELHO_VIA, HIGH);
-  delay(2000);
-  
-  //desliga o vermelho da via e acende o verde por 5 segundos
-  digitalWrite(VERMELHO_PEDESTRE, LOW);
-  digitalWrite(VERDE_PEDESTRE, HIGH);
-  delay(5000);
-   
+  tempoAnterior = millis();
+  while (millis() - tempoAnterior < 2000) {
+    digitalWrite(AMARELO_VIA, LOW);
+    digitalWrite(VERMELHO_VIA, HIGH);
+  }
 
+  //desliga o vermelho da via e acende o verde por 5 segundos
+  tempoAnterior = millis();
+  while (millis() - tempoAnterior < 5000) {
+    digitalWrite(VERMELHO_PEDESTRE, LOW);
+    digitalWrite(VERDE_PEDESTRE, HIGH);
+  }
+  
   //pisca o led verde 3 vezes em um intervalo de tempo de 6 segundos
   
   for (int i = 0; i < 3; i++) {
 
-    digitalWrite(VERDE_PEDESTRE, LOW);
-    delay(1000);
-    
-    
-    digitalWrite(VERDE_PEDESTRE, HIGH);
-    delay(1000);   
+    tempoAnterior = millis();
+    while (millis() - tempoAnterior < 1000) {
+      digitalWrite(VERDE_PEDESTRE, LOW);
+    }
+
+    tempoAnterior = millis();
+    while (millis() - tempoAnterior < 1000) {
+      digitalWrite(VERDE_PEDESTRE, HIGH);
+    }
     
   }
-
   //apaga os leds previamente acesos para retornar ao loop neste estado
   digitalWrite(VERMELHO_VIA, LOW);
   digitalWrite(VERDE_PEDESTRE, LOW);
   
   //seta a variável emLatencia para true, para indicar que o semáforo entrará em modo de latência após a execução de seu código
+  //cronometra o tempo de início do modo de latência
+  tempoInicioLatencia = millis();
   emLatencia = true;
   
 }
